@@ -1,1 +1,0 @@
-# CarND-Semantic-Segmentation
