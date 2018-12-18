@@ -62,26 +62,34 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     """
     # TODO: Implement function
     regularizer = tf.contrib.layers.l2_regularizer(1e-3)
+    # add initializer - hoping this helps training.
+    initializer = tf.random_normal_initializer(stddev=1e-2)
     
     # 1x1 for each out
     l7_conv_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', 
-                                   kernel_regularizer=regularizer)
+                                   kernel_regularizer=regularizer,
+                                   kernel_initializer=initializer)
     l4_conv_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same', 
-                                   kernel_regularizer=regularizer)
+                                   kernel_regularizer=regularizer,
+                                   kernel_initializer=initializer)
     l3_conv_1x1 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, padding='same', 
-                                   kernel_regularizer=regularizer)
+                                   kernel_regularizer=regularizer,
+                                   kernel_initializer=initializer)
 
 
     # up for each 1x1
     l7_output = tf.layers.conv2d_transpose(l7_conv_1x1, num_classes, 4, 2, padding='same',
-                                           kernel_regularizer=regularizer)
+                                           kernel_regularizer=regularizer,
+                                           kernel_initializer=initializer)
     l4_skip = tf.add(l7_output, l4_conv_1x1)
     l4_output = tf.layers.conv2d_transpose(l4_skip, num_classes, 4, 2, padding='same',
-                                           kernel_regularizer=regularizer)
+                                           kernel_regularizer=regularizer,
+                                           kernel_initializer=initializer)
     l3_skip = tf.add(l4_output, l3_conv_1x1)
     
     model = tf.layers.conv2d_transpose(l3_skip, num_classes, 16, 8, padding='same',
-                                       kernel_regularizer=regularizer)
+                                       kernel_regularizer=regularizer,
+                                       kernel_initializer=initializer)
     return model
 tests.test_layers(layers)
 
@@ -176,8 +184,8 @@ def run():
                                                         learning_rate, num_classes)
 
         # TODO: Train NN using the train_nn function
-        epochs = 20
-        batch_size = 2
+        epochs = 50
+        batch_size = 8
 
         sess.run(tf.global_variables_initializer())
         train_nn(sess, epochs, batch_size, get_batches_fn, train_op, 
