@@ -1,4 +1,84 @@
 # Semantic Segmentation
+
+### Training
+
+I started with a skeleton provided by the "Project Q&A" session video. Initially, I tried to use my own computer with a GPU. But my GPU doesn't have enough memory to process all the variables in the network. Thus, I had to change my workspace to "Workspace: Semantic Segmentation" provided by Udacity.
+
+I uploaded `data_road` and `vgg` model to the Workspace before testing my `main.py` implementation.
+
+I used `keep_alive.py` to run `main.py` but I had to change one line of the source code and run `keep_alive.py` inside `CardND-Semantic-Segmentation` folder. The Udacity's instructions regarding Workspace  must be fixed. If you followed the Udacity's original instruction, `main.py` cannot find `data` folder.
+
+```
+with active_session():
+    # do long-running work here
+    #call(["python", "CarND-Semantic-Segmentation/main.py"])    
+    call(["python", "main.py"])
+```
+
+You must be at `/home/workspace/CarND-Semantic-Segmentation` folder to run `keep_alive.py` now. Then run it.
+
+```
+python ../keep_alive.py
+```
+
+The output from the first trial was terrible. The segmentation results were almost same as the insufficient example output shown in the Udacity's original README file. 
+
+With the hyperparameters below, 0.69 was the final loss which was much higher than it is necessary. 
+
+- l2_regularizer's scale: 1e-3
+- keep_prob: 0.5
+- learning_rate: 1e-5
+- epochs: 20
+- batch_size: 4
+
+So I added a `random_normal_initializer` with `stddev` 1e-2 to each layer of the network hoping this addition would reduce the loss.
+
+- l2_regularizer's scale: 1e-3
+- random_normal_initializer: 1e-2
+- keep_prob: 0.5
+- learning_rate: 1e-5
+- epochs: 40
+- batch_size: 8
+
+This time, the loss was around 0.1 which was much better than the first trial.
+
+![ ](./examples/1545183214.420145/um_000029.png) 
+![ ](./examples/1545183214.420145/umm_000072.png) 
+![ ](./examples/1545183214.420145/uu_000006.png) 
+
+Then, I increased the epochs to 50 and reduce the batch size to 5. Other hyperparameters were not changed. I had 0.04 for the final loss.
+
+![ ](./examples/1545188284.2499096/um_000029.png) 
+![ ](./examples/1545188284.2499096/umm_000072.png) 
+![ ](./examples/1545188284.2499096/uu_000006.png) 
+
+At the last several epochs, I did not see much reduction in the loss. So I changed the `learning_rate` and here are examples from my final output.
+
+![ ](./examples/1545192834.8808994/um_000029.png) 
+![ ](./examples/1545192834.8808994/umm_000072.png) 
+![ ](./examples/1545192834.8808994/uu_000006.png) 
+
+The final hyperparameters that I used here are as follows
+
+- l2_regularizer's scale: 1e-3
+- random_normal_initializer: 1e-2
+- keep_prob: 0.5
+- learning_rate: 9e-4
+- epochs: 50
+- batch_size: 5
+
+
+### Results
+
+
+[![output](https://img.youtube.com/vi/XpjJ4wTMnjg/0.jpg)](https://youtu.be/XpjJ4wTMnjg)
+
+---
+
+The description below is Udacity's original README for this project repository.
+
+----
+
 ### Introduction
 In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
 
