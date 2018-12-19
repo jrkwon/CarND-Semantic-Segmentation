@@ -34,7 +34,7 @@ With the hyperparameters below, 0.69 was the final loss which was much higher th
 So I added a `random_normal_initializer` with `stddev` 1e-2 to each layer of the network hoping this addition would reduce the loss.
 
 - l2_regularizer's scale: 1e-3
-- random_normal_initializer: 1e-2
+- random_normal_initializer's stddev: 1e-2
 - keep_prob: 0.5
 - learning_rate: 1e-5
 - epochs: 40
@@ -52,26 +52,26 @@ Then, I increased the epochs to 50 and reduce the batch size to 5. Other hyperpa
 ![ ](./examples/1545188284.2499096/umm_000072.png) 
 ![ ](./examples/1545188284.2499096/uu_000006.png) 
 
-At the last several epochs, I did not see much reduction in the loss. So I changed the `learning_rate` and here are examples from my final output.
+At the last several epochs, I did not see much reduction in the loss. So I changed `learning_rate` to 9e-4. In this trial, `batch_size` was increased to 10. In the final epoch, the average loss was 0.0188396552. Here are examples from my final output.
 
-![ ](./examples/1545192834.8808994/um_000029.png) 
-![ ](./examples/1545192834.8808994/umm_000072.png) 
-![ ](./examples/1545192834.8808994/uu_000006.png) 
+![ ](./examples/1545249222.8532913/um_000029.png) 
+![ ](./examples/1545249222.8532913/umm_000072.png) 
+![ ](./examples/1545249222.8532913/uu_000006.png) 
 
-The final hyperparameters that I used here are as follows
+The final hyperparameters that I used for this project are as follows
 
 - l2_regularizer's scale: 1e-3
-- random_normal_initializer: 1e-2
+- random_normal_initializer's stddev: 1e-2
 - keep_prob: 0.5
 - learning_rate: 9e-4
 - epochs: 50
-- batch_size: 5
+- batch_size: 10
 
 
 ### Results
 
 
-[![output](https://img.youtube.com/vi/XpjJ4wTMnjg/0.jpg)](https://youtu.be/XpjJ4wTMnjg)
+[![output](https://img.youtube.com/vi/BYp_9EQqSYs/0.jpg)](https://youtu.be/BYp_9EQqSYs)
 
 ---
 
